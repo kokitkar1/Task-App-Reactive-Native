@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Button, StyleSheet, ScrollView, FlatList } from 'react-native'
+import { View, Text, TextInput, Button, StyleSheet, ScrollView, FlatList, Alert } from 'react-native'
 import React, { useState } from 'react'
 import TaskItem from './components/TaskItem.js'
 import AddTask from './components/AddTask.js'
@@ -11,8 +11,13 @@ const Tasks = () => {
     
     const handleAddTaskButton = (task) =>{
         setTaskList((prevTask) => (
-        [...prevTask,task]
+        [...prevTask,{task:task, id:Math.random().toString()}]
         ));
+    }
+
+
+    const handleDelete = (id) =>{
+        setTaskList((currentList)=> currentList.filter((t) => t.id !== id))
     }
 
 
@@ -28,7 +33,7 @@ const Tasks = () => {
         
                 <FlatList 
                 data={taskList}
-                renderItem={({item,index}) => <TaskItem item={item} index={index}/>}
+                renderItem={({item,index}) => <TaskItem handleDelete={handleDelete} item={item} index={index}/>}
                 keyExtractor={(item,index) => {
                     return index
                 }}
